@@ -1,7 +1,7 @@
 import asyncio
 import json
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.utils.markdown import hbold, hlink
+from aiogram.utils.markdown import hbold, hlink, hide_link
 from aiogram.dispatcher.filters import Text
 from config import token, user_id
 from p123 import check_news_update
@@ -26,10 +26,11 @@ async def get_all_news(message: types.Message):
         news_dict = json.load(file)
 
     for k, v in sorted(news_dict.items()):
-        news = f"{hbold(v['article_date'])}\n" \
+        news = f"{hide_link(v['article_image'])}" \
+               f"{hbold(v['article_date'])}\n" \
                f"{hlink(v['article_title'], v['article_url'])}"
 
-        await message.answer(news)
+        await message.answer(news, parse_mode=types.ParseMode.HTML)
 
 
 @dp.message_handler(Text(equals="Свежие новости"))
@@ -38,10 +39,11 @@ async def get_fresh_news(message: types.Message):
 
     if len(fresh_news) >= 1:
         for k, v in sorted(fresh_news.items()):
-            news = f"{hbold(v['article_date'])}\n" \
+            news = f"{hide_link(v['article_image'])}" \
+                   f"{hbold(v['article_date'])}\n" \
                    f"{hlink(v['article_title'], v['article_url'])}"
 
-            await message.answer(news)
+            await message.answer(news, parse_mode=types.ParseMode.HTML)
 
     else:
         await message.answer("Пока нет свежих новостей")
@@ -53,11 +55,12 @@ async def news_every_minute():
 
         if len(fresh_news) >= 1:
             for k, v in sorted(fresh_news.items()):
-                news = f"{hbold(v['article_date'])}\n" \
+                news = f"{hide_link(v['article_image'])}" \
+                       f"{hbold(v['article_date'])}\n" \
                        f"{hlink(v['article_title'], v['article_url'])}"
 
                 # id @userinfobot
-                await bot.send_message(user_id, news, disable_notification=True)
+                await bot.send_message(user_id, news, disable_notification=True, parse_mode=types.ParseMode.HTML)
 
         #else:
         #    await bot.send_message(user_id, "Пока нет свежих новостей...", disable_notification=True)
