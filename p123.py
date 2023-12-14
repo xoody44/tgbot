@@ -58,8 +58,8 @@ def check_news_update():
         try:
             article_url = f'https://gimn19-r45.gosuslugi.ru{article.find("h2", class_="object-item-title tpl-text-header2").find("a").get("href")}'
         except AttributeError:
-            #print(f"В этом объекте случилась проблема. См. его ниже:")
-            #print(article)
+            # print(f"В этом объекте случилась проблема. См. его ниже:")
+            # print(article)
             continue
         article_id = article_url.split("/")[-1]
         article_id = article_id[:-5]
@@ -72,8 +72,8 @@ def check_news_update():
                 article_date = article.find("span", class_="item-date tpl-text-alt").text.strip()
                 article_url = f'https://gimn19-r45.gosuslugi.ru{article.find("h2", class_="object-item-title tpl-text-header2").find("a").get("href")}'
             except AttributeError:
-                #print(f"В этом объекте случилась проблема. См. его ниже:")
-                #print(article)
+                # print(f"В этом объекте случилась проблема. См. его ниже:")
+                # print(article)
                 continue
 
             news_dict[article_id] = {
@@ -95,7 +95,7 @@ def check_news_update():
 
 def main():
     first_news()
-    #print(check_news_update())
+    # print(check_news_update())
 
 
 if __name__ == '__main__':
